@@ -15,13 +15,96 @@ devtools::install_github("xmengju/BMEF")
 
 ## Simulate Data and Fit the Model
 
+``` r
+#library(BMEF)
+devtools::load_all(".")
+```
+
+    ## ℹ Loading BMEF
+
+``` r
+library(pracma)
+library(splines)
+
+# Simulation setup
+n <- 50       # number of subjects
+J <- 4        # number of conditions
+TT <- 50      # time points
+FF <- 50      # frequency points
+K_T <- 4      # time basis functions
+K_F <- 5      # frequency basis functions
+R <- 2        # true rank
+p <- 2        # number of covariates
+
+set.seed(1)
+U <- randortho(K_T)[, 1:R]
+V <- randortho(K_F)[, 1:R]
+X <- cbind(1, runif(n, -3, 3))
+
+Sigma2s <- list(
+  Sigma2_epsilon = 0.05^2,
+  Sigma2_gamma = 0.2^2,
+  Sigma2_omega = runif(n, 0.2^2)
+)
+
+Delta <- array(runif(J * R * p, 0.5, 1), dim = c(J, R, p)) 
+entries_idx <- rbinom(J * R * p, 1, 0.5)
+Delta[entries_idx] <- -Delta[entries_idx]
+
+# Generate synthetic data
+dat <- dat.gen(seed = 1, n, J, TT, FF, K_T, K_F, U, V, Delta, X, Sigma2s)
+
+# Fit BMEF models
+n_burn <- 1000
+n_sample <- 200
+tt <- dat$tt
+ff <- dat$ff
+Y <- dat$Y
+JJ <- matrix(1, n, J)
+R_max <- 4
+
+bmef_1 <- bmef(Y, X, JJ, tt, ff, R = R_max, K_T, K_F, n_burn, n_sample,
+               params = NULL, alg_type = "BMEF-1", threshold = 0.01, save_all = FALSE)
+```
+
+    ## [1] "100-th iteration"
+    ## [1] "200-th iteration"
+    ## [1] "300-th iteration"
+    ## [1] "400-th iteration"
+    ## [1] "500-th iteration"
+    ## [1] "600-th iteration"
+    ## [1] "700-th iteration"
+    ## [1] "800-th iteration"
+    ## [1] "900-th iteration"
+    ## [1] "1000-th iteration"
+    ## [1] "1100-th iteration"
+    ## [1] "1200-th iteration"
+
+``` r
+bmef_2 <- bmef(Y, X, JJ, tt, ff, R = R_max, K_T, K_F, n_burn, n_sample,
+               params = NULL, alg_type = "BMEF-2", threshold = 0.01, save_all = FALSE)
+```
+
+    ## [1] "100-th iteration"
+    ## [1] "200-th iteration"
+    ## [1] "300-th iteration"
+    ## [1] "400-th iteration"
+    ## [1] "500-th iteration"
+    ## [1] "600-th iteration"
+    ## [1] "700-th iteration"
+    ## [1] "800-th iteration"
+    ## [1] "900-th iteration"
+    ## [1] "1000-th iteration"
+    ## [1] "1100-th iteration"
+    ## [1] "1200-th iteration"
+
 ------------------------------------------------------------------------
 
 ## Summary of Posterior Inference
 
 ``` r
 # Posterior inference on fixed and random effects
-bmef_obj <- bmef_1
+bmef_obj <- bmef_2
 cred_level <- 0.95
 
 res_infer_decompose <- inference.decompose.bmef(bmef_obj, cred_level)

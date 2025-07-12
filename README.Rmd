@@ -16,7 +16,7 @@ devtools::install_github("xmengju/BMEF")
 
 ## Simulate Data and Fit the Model
 
-```{r simulate-and-fit, eval=TRUE, include=FALSE}
+```{r simulate-and-fit, eval=TRUE, include=TRUE}
 #library(BMEF)
 devtools::load_all(".")
 library(pracma)
@@ -24,7 +24,7 @@ library(splines)
 
 # Simulation setup
 n <- 50       # number of subjects
-J <- 3        # number of conditions
+J <- 4        # number of conditions
 TT <- 50      # time points
 FF <- 50      # frequency points
 K_T <- 4      # time basis functions
@@ -51,7 +51,7 @@ Delta[entries_idx] <- -Delta[entries_idx]
 dat <- dat.gen(seed = 1, n, J, TT, FF, K_T, K_F, U, V, Delta, X, Sigma2s)
 
 # Fit BMEF models
-n_burn <- 300
+n_burn <- 1000
 n_sample <- 200
 tt <- dat$tt
 ff <- dat$ff
@@ -72,7 +72,7 @@ bmef_2 <- bmef(Y, X, JJ, tt, ff, R = R_max, K_T, K_F, n_burn, n_sample,
 
 ```{r inference, eval=TRUE}
 # Posterior inference on fixed and random effects
-bmef_obj <- bmef_1
+bmef_obj <- bmef_2
 cred_level <- 0.95
 
 res_infer_decompose <- inference.decompose.bmef(bmef_obj, cred_level)

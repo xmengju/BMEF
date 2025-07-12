@@ -181,9 +181,9 @@ bmef <- function(Y, X, JJ,  tt, ff, R, K_T, K_F,  n_burn, n_sample, params = NUL
 
     if(s%%100 == 0){
       print(paste(s, "-th iteration", sep = ""))
-      print(paste( "Active ranks: ", R_indices, sep = ""))
-      print("Tau_r")
-      print(tau_current)
+      #print(paste( "Active ranks: ", R_indices, sep = ""))
+      #print("Tau_r")
+      #print(tau_current)
     }
 
     if(s%%100 == 0){

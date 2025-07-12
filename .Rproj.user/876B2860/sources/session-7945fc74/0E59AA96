@@ -3,7 +3,7 @@
     "path": "~/BMEF/README.Rmd",
     "project_path": "README.Rmd",
     "type": "r_markdown",
-    "hash": "0",
+    "hash": "306076934",
     "contents": "",
     "dirty": false,
     "created": 1751825521450.0,
@@ -12,15 +12,15 @@
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "41,20",
-        "scrollLine": "32"
+        "cursorPosition": "74,18",
+        "scrollLine": "66"
     },
     "folds": "",
-    "lastKnownWriteTime": 1752287867,
+    "lastKnownWriteTime": 1752291465,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1752287867289,
+    "last_content_update": 1752291465077,
     "read_only": false,
     "read_only_alternatives": []
 }
