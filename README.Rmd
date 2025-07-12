@@ -1,7 +1,7 @@
 ---
 title: "BMEF: Bayesian  Mixed-Effects Models  for Multilevel Two-way Functional Data"
 date: "`r format(Sys.Date())`"
-author: "Xiaomeng Ju, Thaddeus Tarpey, Hyung G. Park"
+author:  ""
 output: github_document
 ---
 
@@ -16,7 +16,7 @@ devtools::install_github("xmengju/BMEF")
 
 ## Simulate Data and Fit the Model
 
-```{r simulate-and-fit, eval=TRUE}
+```{r simulate-and-fit, eval=TRUE, include=FALSE}
 #library(BMEF)
 devtools::load_all(".")
 library(pracma)
@@ -38,8 +38,8 @@ V <- randortho(K_F)[, 1:R]
 X <- cbind(1, runif(n, -3, 3))
 
 Sigma2s <- list(
-  Sigma2_epsilon = 0.1^2,
-  Sigma2_gamma = 0.1^2,
+  Sigma2_epsilon = 0.05^2,
+  Sigma2_gamma = 0.2^2,
   Sigma2_omega = runif(n, 0.2^2)
 )
 
@@ -68,7 +68,7 @@ bmef_2 <- bmef(Y, X, JJ, tt, ff, R = R_max, K_T, K_F, n_burn, n_sample,
 
 ---
 
-## Posterior Inference
+## Summary of Posterior Inference
 
 ```{r inference, eval=TRUE}
 # Posterior inference on fixed and random effects
@@ -83,7 +83,7 @@ res_infer_mixed <- inference.mixed.bmef(bmef_obj)
 
 ## Visualization
 
-```{r visualize, eval=TRUE}
+```{r visualize, eval=TRUE,fig.width=9, fig.height=4.5}
 library(tidyr)
 library(ggplot2)
 library(gridExtra)
@@ -122,6 +122,7 @@ p_A <- ggplot(df_long %>%dplyr::filter(type %in% c("A_est", "A_true")), aes(x = 
        )  +  theme(strip.text = element_text(size = 12, face = "bold"))
 
 
+plot(p_A)
 # compare estimated B with true B
 p_B <- ggplot(df_long %>%dplyr::filter(type %in% c("B_est", "B_true")), aes(x = tt, y = ff, fill = value)) +
   geom_tile() +
@@ -135,6 +136,7 @@ p_B <- ggplot(df_long %>%dplyr::filter(type %in% c("B_est", "B_true")), aes(x = 
                                   panel.grid.minor.x = element_blank()
        )  +  theme(strip.text = element_text(size = 12, face = "bold"))
   
+plot(p_B)
 # compare estimated C with true C
 p_C <- ggplot(df_long %>%dplyr::filter(type %in% c("C_est", "C_true")), aes(x = tt, y = ff, fill = value)) +
   geom_tile() +
@@ -148,7 +150,7 @@ p_C <- ggplot(df_long %>%dplyr::filter(type %in% c("C_est", "C_true")), aes(x = 
                                   panel.grid.minor.x = element_blank()
        )  +  theme(strip.text = element_text(size = 12, face = "bold"))
   
-
+plot(p_C)
 ```
 
 

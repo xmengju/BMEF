@@ -1,7 +1,6 @@
 BMEF: Bayesian Mixed-Effects Models for Multilevel Two-way Functional
 Data
 ================
-Xiaomeng Ju, Thaddeus Tarpey, Hyung G. Park
 2025-07-11
 
 This repository contains `R` code implementing Bayesian mixed-Effects
@@ -16,108 +15,9 @@ devtools::install_github("xmengju/BMEF")
 
 ## Simulate Data and Fit the Model
 
-``` r
-#library(BMEF)
-devtools::load_all(".")
-```
-
-    ## ℹ Loading BMEF
-
-``` r
-library(pracma)
-library(splines)
-
-# Simulation setup
-n <- 50       # number of subjects
-J <- 3        # number of conditions
-TT <- 50      # time points
-FF <- 50      # frequency points
-K_T <- 4      # time basis functions
-K_F <- 5      # frequency basis functions
-R <- 2        # true rank
-p <- 2        # number of covariates
-
-set.seed(1)
-U <- randortho(K_T)[, 1:R]
-V <- randortho(K_F)[, 1:R]
-X <- cbind(1, runif(n, -3, 3))
-
-Sigma2s <- list(
-  Sigma2_epsilon = 0.1^2,
-  Sigma2_gamma = 0.1^2,
-  Sigma2_omega = runif(n, 0.2^2)
-)
-
-Delta <- array(runif(J * R * p, 0.5, 1), dim = c(J, R, p)) 
-entries_idx <- rbinom(J * R * p, 1, 0.5)
-Delta[entries_idx] <- -Delta[entries_idx]
-
-# Generate synthetic data
-dat <- dat.gen(seed = 1, n, J, TT, FF, K_T, K_F, U, V, Delta, X, Sigma2s)
-
-# Fit BMEF models
-n_burn <- 300
-n_sample <- 200
-tt <- dat$tt
-ff <- dat$ff
-Y <- dat$Y
-JJ <- matrix(1, n, J)
-R_max <- 4
-
-bmef_1 <- bmef(Y, X, JJ, tt, ff, R = R_max, K_T, K_F, n_burn, n_sample,
-               params = NULL, alg_type = "BMEF-1", threshold = 0.01, save_all = FALSE)
-```
-
-    ## [1] "100-th iteration"
-    ## [1] "Active ranks: 1"
-    ## [1] "Tau_r"
-    ## [1] 0.07476195         NA         NA         NA
-    ## [1] "200-th iteration"
-    ## [1] "Active ranks: 1" "Active ranks: 2"
-    ## [1] "Tau_r"
-    ## [1] 0.08049459 0.07333711         NA         NA
-    ## [1] "300-th iteration"
-    ## [1] "Active ranks: 1" "Active ranks: 2" "Active ranks: 3"
-    ## [1] "Tau_r"
-    ## [1] 6.997896e-02 6.209749e-02 2.308200e-10           NA
-    ## [1] "400-th iteration"
-    ## [1] "Active ranks: 1" "Active ranks: 2"
-    ## [1] "Tau_r"
-    ## [1] 7.449841e-02 6.634236e-02 2.308200e-10           NA
-    ## [1] "500-th iteration"
-    ## [1] "Active ranks: 1" "Active ranks: 2"
-    ## [1] "Tau_r"
-    ## [1] 8.201040e-02 6.854492e-02 2.308200e-10           NA
-
-``` r
-bmef_2 <- bmef(Y, X, JJ, tt, ff, R = R_max, K_T, K_F, n_burn, n_sample,
-               params = NULL, alg_type = "BMEF-2", threshold = 0.01, save_all = FALSE)
-```
-
-    ## [1] "100-th iteration"
-    ## [1] "Active ranks: 1"
-    ## [1] "Tau_r"
-    ## [1] 0.08609676         NA         NA         NA
-    ## [1] "200-th iteration"
-    ## [1] "Active ranks: 1" "Active ranks: 2"
-    ## [1] "Tau_r"
-    ## [1] 0.08192094 0.05995396         NA         NA
-    ## [1] "300-th iteration"
-    ## [1] "Active ranks: 1" "Active ranks: 2" "Active ranks: 3"
-    ## [1] "Tau_r"
-    ## [1] 8.194238e-02 6.526875e-02 2.704382e-09           NA
-    ## [1] "400-th iteration"
-    ## [1] "Active ranks: 1" "Active ranks: 2"
-    ## [1] "Tau_r"
-    ## [1] 7.920990e-02 6.284623e-02 2.704382e-09           NA
-    ## [1] "500-th iteration"
-    ## [1] "Active ranks: 1" "Active ranks: 2"
-    ## [1] "Tau_r"
-    ## [1] 8.311213e-02 5.908153e-02 2.704382e-09           NA
-
 ------------------------------------------------------------------------
 
-## Posterior Inference
+## Summary of Posterior Inference
 
 ``` r
 # Posterior inference on fixed and random effects
@@ -176,6 +76,12 @@ p_A <- ggplot(df_long %>%dplyr::filter(type %in% c("A_est", "A_true")), aes(x = 
        )  +  theme(strip.text = element_text(size = 12, face = "bold"))
 
 
+plot(p_A)
+```
+
+![](README_files/figure-gfm/visualize-1.png)<!-- -->
+
+``` r
 # compare estimated B with true B
 p_B <- ggplot(df_long %>%dplyr::filter(type %in% c("B_est", "B_true")), aes(x = tt, y = ff, fill = value)) +
   geom_tile() +
@@ -189,6 +95,12 @@ p_B <- ggplot(df_long %>%dplyr::filter(type %in% c("B_est", "B_true")), aes(x = 
                                   panel.grid.minor.x = element_blank()
        )  +  theme(strip.text = element_text(size = 12, face = "bold"))
   
+plot(p_B)
+```
+
+![](README_files/figure-gfm/visualize-2.png)<!-- -->
+
+``` r
 # compare estimated C with true C
 p_C <- ggplot(df_long %>%dplyr::filter(type %in% c("C_est", "C_true")), aes(x = tt, y = ff, fill = value)) +
   geom_tile() +
@@ -201,7 +113,11 @@ p_C <- ggplot(df_long %>%dplyr::filter(type %in% c("C_est", "C_true")), aes(x = 
                                   panel.grid.major.x = element_blank(),   
                                   panel.grid.minor.x = element_blank()
        )  +  theme(strip.text = element_text(size = 12, face = "bold"))
+  
+plot(p_C)
 ```
+
+![](README_files/figure-gfm/visualize-3.png)<!-- -->
 
 ## Make inference of the two-way “base” patterns and marginal “principal” functions
 
