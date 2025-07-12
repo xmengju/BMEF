@@ -1,0 +1,54 @@
+---
+title: "BMEF: Bayesian  Mixed-Effects Models  for Multilevel Two-way Functional Data"
+output: html_document
+date: "2025-07-06"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This repository contains the code implementing the proposed Bayesian mixed-Effects models  for multilevel two-way functional data (BMEF). 
+
+
+## An illustrating example
+Below we demonstrate the use of the proposed method  (`BMEF`)  using simulated data.
+
+First, load the necessary packages and functions:
+
+``` r
+source("fun_gen.R")
+library(expm)
+library(pracma)
+library(cmdstanr)
+library(bayesplot)
+```
+
+We simulate data following the setup in our manuscript, for a case with the following parameters
+
+
+
+
+
+## 2 settings homogeneous variance and heterogeneous variance 
+
+
+
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

@@ -1,0 +1,16 @@
+Package: BMEF
+Type: Package
+Title: Bayesian Mixed-Effects Model for Multilevel Two-Way Functional Data (BMEF)
+Version: 0.1.0
+Author: Xiaomeng Ju
+Maintainer: Xiaomeng Ju <jux01@nyu.edu>
+Description: This package fits Bayesian Mixed-Effects Model for Multilevel Two-Way Functional Data (BMEF)
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.3.2
+Imports:
+    splines,
+    MASS,
+    VGAM,
+    mcompanion
+

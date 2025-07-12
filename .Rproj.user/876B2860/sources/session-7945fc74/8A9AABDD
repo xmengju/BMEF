@@ -1,0 +1,26 @@
+{
+    "id": "8A9AABDD",
+    "path": "~/BMEF/R/helper.R",
+    "project_path": "R/helper.R",
+    "type": "r_source",
+    "hash": "1486634157",
+    "contents": "",
+    "dirty": false,
+    "created": 1752178524764.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "231,11",
+        "scrollLine": "224"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1752255085,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1752255085328,
+    "read_only": false,
+    "read_only_alternatives": []
+}
