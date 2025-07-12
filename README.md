@@ -42,9 +42,9 @@ V <- randortho(K_F)[, 1:R]
 X <- cbind(1, runif(n, -3, 3))
 
 Sigma2s <- list(
-  Sigma2_epsilon = 0.05^2,
-  Sigma2_gamma = 0.2^2,
-  Sigma2_omega = runif(n, 0.2^2)
+  Sigma2_epsilon = 0.1^2,
+  Sigma2_gamma = 0.4^2,
+  Sigma2_omega = runif(n, 0.4^2)
 )
 
 Delta <- array(runif(J * R * p, 0.5, 1), dim = c(J, R, p)) 
@@ -104,7 +104,7 @@ bmef_2 <- bmef(Y, X, JJ, tt, ff, R = R_max, K_T, K_F, n_burn, n_sample,
 
 ``` r
 # Posterior inference on fixed and random effects
-bmef_obj <- bmef_2
+bmef_obj <- bmef_1
 cred_level <- 0.95
 
 res_infer_decompose <- inference.decompose.bmef(bmef_obj, cred_level)
